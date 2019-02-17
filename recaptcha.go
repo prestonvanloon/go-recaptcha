@@ -26,7 +26,7 @@ type RecaptchaResponse struct {
 const recaptchaServerName = "https://www.google.com/recaptcha/api/siteverify"
 
 type Recaptcha struct {
-  RecaptchaPrivateKey string
+	RecaptchaPrivateKey string
 }
 
 // Check uses the client ip address, the challenge code from the reCaptcha form,
@@ -34,7 +34,7 @@ type Recaptcha struct {
 // the client answered the reCaptcha input question correctly.
 func (r *Recaptcha) Check(remoteip, response string) (*RecaptchaResponse, error) {
 	resp, err := http.PostForm(recaptchaServerName,
-	   url.Values{"secret": {recaptchaPrivateKey:r.RecaptchaPrivateKey}, "remoteip": {remoteip}, "response": {response}})
+		url.Values{"secret": {r.RecaptchaPrivateKey}, "remoteip": {remoteip}, "response": {response}})
 	if err != nil {
 		log.Printf("Post error: %s\n", err)
 		return nil, err
@@ -44,9 +44,10 @@ func (r *Recaptcha) Check(remoteip, response string) (*RecaptchaResponse, error)
 	if err != nil {
 		return nil, err
 	}
-	err = json.Unmarshal(body, &r)
+	var rr *RecaptchaResponse
+	err = json.Unmarshal(body, rr)
 	if err != nil {
 		return nil, err
 	}
-	return body, err
+	return rr, err
 }
