@@ -44,7 +44,7 @@ func (r *Recaptcha) Check(remoteip, response string) (*RecaptchaResponse, error)
 	if err != nil {
 		return nil, err
 	}
-	var rr *RecaptchaResponse
+	rr := &RecaptchaResponse{}
 	err = json.Unmarshal(body, rr)
 	if err != nil {
 		return nil, err
